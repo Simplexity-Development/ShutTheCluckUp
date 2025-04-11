@@ -1,0 +1,18 @@
+silence-wand:
+  custom-name: "<yellow>Silencing Wand</yellow>"
+  item-type: STICK
+  item-model: ""
+  enchantment-glint: true
+mobs:
+  passive:
+    - CHICKEN
+    - COW
+    - PIG
+    - SHEEP
+  hostile:
+    - ZOMBIE
+    - SKELETON
+    - WITCH
+    - SPIDER
+  other:
+    - VILLAGER

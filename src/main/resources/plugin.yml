@@ -1,0 +1,24 @@
+name: ShutTheCluckUp
+version: '0.0.0'
+main: simplexity.shutTheCluckUp.ShutTheCluckUp
+api-version: '1.21.4'
+commands:
+  silence-wand:
+    description: gives wand
+    permission: silence.wand
+permissions:
+  silence.wand:
+    default: op
+    description: allows command for wand
+  silence.bypass.mob-type:
+    default: op
+    description: bypass all configured mob types, silence any mob
+  silence.mobs.passive:
+    default: op
+    description: Allows silencing of passive mobs
+  silence.mobs.hostile:
+    default: op
+    description: Allows silencing of hostile mobs
+  silence.mobs.other:
+    default: op
+    description: Allows silencing of other mob types
