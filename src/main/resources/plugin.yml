@@ -10,6 +10,9 @@ permissions:
   silence.wand:
     default: op
     description: allows command for wand
+  silence.other.wand:
+    default: op
+    description: allows giving a wand to another player
   silence.bypass.mob-type:
     default: op
     description: bypass all configured mob types, silence any mob

@@ -1,6 +1,7 @@
 package simplexity.shutthecluckup.commands;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import simplexity.shutthecluckup.ShutTheCluckUp;
+import simplexity.shutthecluckup.Util;
 import simplexity.shutthecluckup.configs.ConfigHandler;
 import simplexity.shutthecluckup.configs.Message;
 
@@ -24,21 +26,13 @@ public class SilenceWandCommand {
 
     public static LiteralCommandNode<CommandSourceStack> createCommand() {
         return Commands.literal("silence-wand")
+                .requires(sender -> sender.getSender().hasPermission(Util.WAND_COMMAND))
                 .executes(context -> {
-                    CommandSourceStack sourceStack = context.getSource();
-                    CommandSender sender = sourceStack.getSender();
-                    if (!(sender instanceof Player player)) {
-                        sender.sendRichMessage(Message.ERROR_MUST_PROVIDE_PLAYER.getMessage());
-                        return 0;
-                    } else {
-                        giveWand(player);
-                        sender.sendRichMessage(Message.FEEDBACK_WAND_SUCCESS.getMessage(),
-                                Placeholder.parsed("name", sender.getName()));
-                        return Command.SINGLE_SUCCESS;
-                    }
+                    return handleNoArgument(context.getSource().getSender());
                 })
                 .then(
                         Commands.argument("target", ArgumentTypes.player())
+                                .requires(sender -> sender.getSender().hasPermission(Util.WAND_OTHER_COMMAND))
                                 .executes(
                                         context -> {
                                             CommandSender sender = context.getSource().getSender();
@@ -50,6 +44,18 @@ public class SilenceWandCommand {
                                             return Command.SINGLE_SUCCESS;
                                         }
                                 )).build();
+    }
+
+    private static int handleNoArgument(CommandSender sender){
+        if (!(sender instanceof Player player)) {
+            sender.sendRichMessage(Message.ERROR_MUST_PROVIDE_PLAYER.getMessage());
+            return 0;
+        } else {
+            giveWand(player);
+            sender.sendRichMessage(Message.FEEDBACK_WAND_SUCCESS.getMessage(),
+                    Placeholder.parsed("name", sender.getName()));
+            return Command.SINGLE_SUCCESS;
+        }
     }
 
     private static void giveWand(Player player) {
