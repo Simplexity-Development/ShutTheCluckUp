@@ -1,4 +1,4 @@
-package simplexity.shutTheCluckUp;
+package simplexity.shutthecluckup;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;

@@ -1,6 +1,6 @@
 name: ShutTheCluckUp
 version: '0.0.0'
-main: simplexity.shutTheCluckUp.ShutTheCluckUp
+main: simplexity.shutthecluckup.ShutTheCluckUp
 api-version: '1.21.4'
 commands:
   silence-wand:

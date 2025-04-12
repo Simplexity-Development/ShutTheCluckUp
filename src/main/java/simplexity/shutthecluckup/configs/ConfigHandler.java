@@ -1,4 +1,4 @@
-package simplexity.shutTheCluckUp;
+package simplexity.shutthecluckup.configs;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
@@ -8,6 +8,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import simplexity.shutthecluckup.ShutTheCluckUp;
 
 import java.util.HashSet;
 import java.util.List;

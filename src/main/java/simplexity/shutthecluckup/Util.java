@@ -1,8 +1,9 @@
-package simplexity.shutTheCluckUp;
+package simplexity.shutthecluckup;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
+import simplexity.shutthecluckup.configs.ConfigHandler;
 
 @SuppressWarnings("RedundantIfStatement")
 public class Util {
