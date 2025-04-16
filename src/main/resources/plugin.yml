@@ -9,19 +9,19 @@ commands:
 permissions:
   silence.wand:
     default: op
-    description: allows command for wand
+    description: Allows command for getting a wand
   silence.other.wand:
     default: op
-    description: allows giving a wand to another player
+    description: Allows giving a wand to another player
+  silence.mobs.basic:
+    default: op
+    description: Allows silencing configured mobs
   silence.bypass.mob-type:
     default: op
-    description: bypass all configured mob types, silence any mob
-  silence.mobs.passive:
+    description: Bypass all configured mob types, silence any mob
+  silence.bypass.cooldown:
     default: op
-    description: Allows silencing of passive mobs
-  silence.mobs.hostile:
+    description: Bypass the wand command cooldown
+  silence.bypass.radius:
     default: op
-    description: Allows silencing of hostile mobs
-  silence.mobs.other:
-    default: op
-    description: Allows silencing of other mob types
+    description: Bypass the configured max radius

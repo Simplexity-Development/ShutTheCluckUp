@@ -30,19 +30,15 @@ public class ConfigHandler {
     private final Logger logger = ShutTheCluckUp.getInstance().getLogger();
     private final MiniMessage miniMessage = ShutTheCluckUp.getMiniMessage();
     private ItemStack wandItemStack;
-    private final HashSet<EntityType> enabledPassives = new HashSet<>();
-    private final HashSet<EntityType> enabledHostiles = new HashSet<>();
-    private final HashSet<EntityType> enabledOther = new HashSet<>();
+    private final HashSet<EntityType> enabledMobs = new HashSet<>();
+    private int maxRadius;
 
     public void reloadConfigValues() {
         ShutTheCluckUp.getInstance().reloadConfig();
         FileConfiguration config = ShutTheCluckUp.getInstance().getConfig();
-        List<String> passiveList = config.getStringList("mobs.passive");
-        List<String> hostileList = config.getStringList("mobs.hostile");
-        List<String> otherList = config.getStringList("mobs.other");
-        validateEntityTypes(passiveList, enabledPassives);
-        validateEntityTypes(hostileList, enabledHostiles);
-        validateEntityTypes(otherList, enabledOther);
+        List<String> mobList = config.getStringList("mobs");
+        maxRadius = config.getInt("max-radius", 10);
+        validateEntityTypes(mobList, enabledMobs);
         validateSilenceWand(config);
     }
 
@@ -94,15 +90,11 @@ public class ConfigHandler {
         return wandItemStack;
     }
 
-    public HashSet<EntityType> getEnabledPassives(){
-        return enabledPassives;
+    public HashSet<EntityType> getEnabledMobs(){
+        return enabledMobs;
     }
 
-    public HashSet<EntityType> getEnabledHostiles(){
-        return enabledHostiles;
-    }
-
-    public HashSet<EntityType> getEnabledOther(){
-        return enabledOther;
+    public int getMaxRadius() {
+        return maxRadius;
     }
 }

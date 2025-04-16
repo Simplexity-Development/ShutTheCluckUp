@@ -1,18 +1,19 @@
+# Please note, changes to this file will not invalidate previously made wands.
+# Wands are validated through a tag in their Persistent Data Container.
 silence-wand:
   custom-name: "<yellow>Silencing Wand</yellow>"
   item-type: STICK
   item-model: ""
   enchantment-glint: true
+  command-cooldown-seconds: 600
 mobs:
-  passive:
-    - CHICKEN
-    - COW
-    - PIG
-    - SHEEP
-  hostile:
-    - ZOMBIE
-    - SKELETON
-    - WITCH
-    - SPIDER
-  other:
-    - VILLAGER
+  - CHICKEN
+  - COW
+  - PIG
+  - SHEEP
+  - ZOMBIE
+  - SKELETON
+  - WITCH
+  - SPIDER
+  - VILLAGER
+max-radius: 10

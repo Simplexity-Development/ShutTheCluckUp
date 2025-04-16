@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings({"ResultOfMethodCallIgnored", "CallToPrintStackTrace", "CollectionAddAllCanBeReplacedWithConstructor"})
 public class LocaleHandler {
 
         private static LocaleHandler instance;

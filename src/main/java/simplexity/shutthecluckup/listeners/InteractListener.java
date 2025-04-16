@@ -28,7 +28,7 @@ public class InteractListener implements Listener {
         if (!Util.playerHasEntityPerms(player, entityType)) return;
         Boolean silenced = SilenceLogic.toggleEntitySilence(livingEntity);
         if (silenced == null) {
-            player.sendRichMessage(Message.MOB_CANNOT_BE_SILENCED.getMessage(),
+            player.sendRichMessage(Message.MOB_CANNOT_BE_ALTERED.getMessage(),
                     Placeholder.component("entity", livingEntity.name()));
             return;
         }

@@ -1,64 +1,66 @@
 package simplexity.shutthecluckup.commands;
 
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import simplexity.shutthecluckup.ShutTheCluckUp;
 import simplexity.shutthecluckup.Util;
 import simplexity.shutthecluckup.configs.ConfigHandler;
 import simplexity.shutthecluckup.configs.Message;
 
-@SuppressWarnings("UnstableApiUsage")
-public class SilenceWandCommand {
+import java.util.List;
+
+public class SilenceWandCommand implements TabExecutor {
 
     public static final NamespacedKey silenceWandKey = new NamespacedKey(ShutTheCluckUp.getInstance(), "silence-wand");
 
-    public static LiteralCommandNode<CommandSourceStack> createCommand() {
-        return Commands.literal("silence-wand")
-                .requires(sender -> sender.getSender().hasPermission(Util.WAND_COMMAND))
-                .executes(context -> {
-                    return handleNoArgument(context.getSource().getSender());
-                })
-                .then(
-                        Commands.argument("target", ArgumentTypes.player())
-                                .requires(sender -> sender.getSender().hasPermission(Util.WAND_OTHER_COMMAND))
-                                .executes(
-                                        context -> {
-                                            CommandSender sender = context.getSource().getSender();
-                                            PlayerSelectorArgumentResolver targetResolver = context.getArgument("target", PlayerSelectorArgumentResolver.class);
-                                            Player target = targetResolver.resolve(context.getSource()).getFirst();
-                                            giveWand(target);
-                                            sender.sendRichMessage(Message.FEEDBACK_WAND_SUCCESS.getMessage(),
-                                                    Placeholder.parsed("name", target.getName()));
-                                            return Command.SINGLE_SUCCESS;
-                                        }
-                                )).build();
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
+        if (args.length < 1) return handleNoArgument(sender);
+        if (!sender.hasPermission(Util.WAND_OTHER_COMMAND)) return false;
+        String playerString = args[0];
+        Player targetPlayer = Bukkit.getPlayer(playerString);
+        if (targetPlayer == null) {
+            sender.sendRichMessage(Message.ERROR_MUST_PROVIDE_PLAYER.getMessage());
+            return false;
+        }
+        giveWand(targetPlayer);
+        sendSuccessMessage(sender, targetPlayer);
+        return false;
     }
 
-    private static int handleNoArgument(CommandSender sender){
+    private void sendSuccessMessage(@Nullable CommandSender sender, Player target) {
+        boolean senderIsTarget = (sender instanceof Player && sender.equals(target));
+        if (sender == null || senderIsTarget) {
+            target.sendRichMessage(Message.FEEDBACK_WAND_RECEIVED_SUCCESS.getMessage());
+            return;
+        }
+        sender.sendRichMessage(Message.FEEDBACK_WAND_GIVE_SUCCESS.getMessage(),
+                Placeholder.parsed("name", target.getName()));
+        target.sendRichMessage(Message.FEEDBACK_WAND_RECEIVED_SUCCESS.getMessage());
+    }
+
+
+    private boolean handleNoArgument(CommandSender sender){
         if (!(sender instanceof Player player)) {
             sender.sendRichMessage(Message.ERROR_MUST_PROVIDE_PLAYER.getMessage());
-            return 0;
+            return false;
         } else {
             giveWand(player);
-            sender.sendRichMessage(Message.FEEDBACK_WAND_SUCCESS.getMessage(),
-                    Placeholder.parsed("name", sender.getName()));
-            return Command.SINGLE_SUCCESS;
+            sendSuccessMessage(sender, player);
+            return true;
         }
     }
 
-    private static void giveWand(Player player) {
+    private void giveWand(Player player) {
         ItemStack wand = ConfigHandler.getInstance().getWandItemStack();
         wand.editPersistentDataContainer(pdc -> {
             pdc.set(silenceWandKey, PersistentDataType.BYTE, (byte) 1);
@@ -72,4 +74,10 @@ public class SilenceWandCommand {
         player.getInventory().setItem(emptySlot, wand);
     }
 
+
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
+        return List.of();
+    }
 }
