@@ -12,7 +12,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import simplexity.shutthecluckup.ShutTheCluckUp;
-import simplexity.shutthecluckup.Util;
+import simplexity.shutthecluckup.logic.Util;
 import simplexity.shutthecluckup.configs.ConfigHandler;
 import simplexity.shutthecluckup.configs.Message;
 

@@ -31,24 +31,27 @@ public class ConfigHandler {
     private final MiniMessage miniMessage = ShutTheCluckUp.getMiniMessage();
     private ItemStack wandItemStack;
     private final HashSet<EntityType> enabledMobs = new HashSet<>();
-    private int maxRadius;
+    private final HashSet<String> enabledMobsNames = new HashSet<>();
+    private double maxRadius;
 
     public void reloadConfigValues() {
         ShutTheCluckUp.getInstance().reloadConfig();
         FileConfiguration config = ShutTheCluckUp.getInstance().getConfig();
         List<String> mobList = config.getStringList("mobs");
         maxRadius = config.getInt("max-radius", 10);
-        validateEntityTypes(mobList, enabledMobs);
+        validateEntityTypes(mobList, enabledMobs, enabledMobsNames);
         validateSilenceWand(config);
     }
 
-    private void validateEntityTypes(List<String> stringList, HashSet<EntityType> entitySet) {
+    private void validateEntityTypes(List<String> stringList, HashSet<EntityType> entitySet, HashSet<String> nameSet) {
         entitySet.clear();
         if (stringList == null || stringList.isEmpty()) return;
         for (String entity : stringList) {
             try {
                 EntityType entityType = EntityType.valueOf(entity);
                 entitySet.add(entityType);
+                nameSet.add(entityType.name());
+
             } catch (IllegalArgumentException e) {
                 logger.warning("The entity type '" + entity + "' was not found. Please check that your syntax and make sure you use SPACE and not TAB");
             }
@@ -94,7 +97,7 @@ public class ConfigHandler {
         return enabledMobs;
     }
 
-    public int getMaxRadius() {
+    public double getMaxRadius() {
         return maxRadius;
     }
 }

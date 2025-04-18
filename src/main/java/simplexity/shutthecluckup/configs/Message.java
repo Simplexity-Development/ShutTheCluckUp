@@ -5,6 +5,9 @@ public enum Message {
     MOB_UN_SILENCED("silence-message.un-silenced","<green><entity> can be heard again!</green>"),
     MOB_SILENCED("silence-message.silenced", "<gray><entity> is now silent!</gray>"),
     MOB_CANNOT_BE_ALTERED("silence-message.cannot-be-altered", "<red>Sorry, <entity>'s 'silent' tag cannot be altered as it has already been silenced by another plugin or command</red>"),
+    MOB_GROUP_SILENCED("silence-group.silenced", "<count> <entity>(s) were silenced"),
+    MOB_GROUP_UNSILENCED("silence-group.unsilenced", "<count> <entity>(s) are now un-silenced"),
+    MOB_GROUP_CANNOT_BE_ALTERED("silence-group.cannot-be-altered", "<count> <entity>(s) could not be altered as they have already been silenced by another plugin or command"),
     FEEDBACK_WAND_GIVE_SUCCESS("feedback.wand-give-success", "<green>Gave <name> a Silence Wand</green>"),
     FEEDBACK_WAND_RECEIVED_SUCCESS("feedback.wand-received-success", "<green>You have received a Silence Wand!</green>"),
     FEEDBACK_CONFIG_RELOADED("feedback.config-reloaded", "<green>Shut The Cluck Up Config Reloaded!</green>"),
@@ -14,7 +17,9 @@ public enum Message {
     ERROR_MUST_PROVIDE_PLAYER("error.must-provide-player", "<red>You must provide a valid player to send this wand to!</red>"),
     ERROR_MUST_PROVIDE_ENTITY("error.must-provide-entity", "<red>You must provide a valid entity</red>"),
     ERROR_MUST_PROVIDE_RADIUS("error.must-provide-radius", "<red>You must provide a radius between 0 and <max></red>"),
-    ERROR_RADIUS_TOO_LARGE("error.radius-too-large", "<red>The provided radius is too large. You must provide a radius between 0 and <max></red>");
+    ERROR_RADIUS_TOO_LARGE("error.radius-too-large", "<red>The provided radius is too large. You must provide a radius between 0 and <max></red>"),
+    ERROR_NO_MOBS_FOUND("error.no-mobs-found", "<red>Could not find any <entity>s in a range of <radius> blocks</red>"),
+    ERROR_NO_VIABLE_MOBS_FOUND("error.no-viable-mobs-found", "<red>Unable to find any <entity>s within <radius> blocks that do not already have the 'silent' tag set to <state>");
 
 
     private final String path;

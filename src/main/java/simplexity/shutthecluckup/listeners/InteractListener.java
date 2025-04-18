@@ -10,9 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import simplexity.shutthecluckup.SilenceLogic;
+import simplexity.shutthecluckup.logic.SilenceLogic;
 import simplexity.shutthecluckup.commands.SilenceWandCommand;
-import simplexity.shutthecluckup.Util;
+import simplexity.shutthecluckup.logic.Util;
 import simplexity.shutthecluckup.configs.Message;
 
 public class InteractListener implements Listener {

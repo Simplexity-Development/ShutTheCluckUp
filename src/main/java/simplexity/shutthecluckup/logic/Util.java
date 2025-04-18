@@ -1,4 +1,4 @@
-package simplexity.shutthecluckup;
+package simplexity.shutthecluckup.logic;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -27,7 +27,8 @@ public class Util {
     }
 
     @Nullable
-    public static EntityType validateEntityType(String entityString){
+    public static EntityType validateEntityType(String entityString) {
+        if (entityString == null || entityString.isEmpty()) return null;
         try {
             return EntityType.valueOf(entityString);
         } catch (IllegalArgumentException e) {
@@ -36,9 +37,10 @@ public class Util {
     }
 
     @Nullable
-    public static Integer validateInteger(String intString){
+    public static Double validateDouble(String doubleString) {
+        if (doubleString == null || doubleString.isEmpty()) return null;
         try {
-            return Integer.parseInt(intString);
+            return Double.parseDouble(doubleString);
         } catch (NumberFormatException e) {
             return null;
         }

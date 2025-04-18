@@ -16,4 +16,4 @@ mobs:
   - WITCH
   - SPIDER
   - VILLAGER
-max-radius: 10
+max-radius: 10.0

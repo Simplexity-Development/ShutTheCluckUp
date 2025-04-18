@@ -6,7 +6,16 @@ commands:
   silence-wand:
     description: gives wand
     permission: silence.wand
+  silence-mobs:
+    description: allows using a command to silence mobs in a radius
+    permission: silence.command
+  silence-reload:
+    description: allows reloading the plugin configuration
+    permission: silence.reload
 permissions:
+  silence.reload:
+    default: op
+    description: Allows reloading of the plugin configuration
   silence.wand:
     default: op
     description: Allows command for getting a wand
@@ -16,6 +25,9 @@ permissions:
   silence.mobs.basic:
     default: op
     description: Allows silencing configured mobs
+  silence.command:
+    default: op
+    description: allows usage of a command to silence mobs in a radius
   silence.bypass.mob-type:
     default: op
     description: Bypass all configured mob types, silence any mob
