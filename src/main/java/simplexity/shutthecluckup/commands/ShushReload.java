@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import simplexity.shutthecluckup.configs.ConfigHandler;
 import simplexity.shutthecluckup.configs.Message;
 
-public class SilenceReload implements CommandExecutor {
+public class ShushReload implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) {
         ConfigHandler.getInstance().reloadConfigValues();

@@ -18,7 +18,7 @@ import simplexity.shutthecluckup.configs.Message;
 
 import java.util.List;
 
-public class SilenceWandCommand implements TabExecutor {
+public class ShushWandCommand implements TabExecutor {
 
     public static final NamespacedKey silenceWandKey = new NamespacedKey(ShutTheCluckUp.getInstance(), "silence-wand");
 

@@ -3,37 +3,34 @@ version: '0.0.0'
 main: simplexity.shutthecluckup.ShutTheCluckUp
 api-version: '1.21.4'
 commands:
-  silence-wand:
+  shush-wand:
     description: gives wand
-    permission: silence.wand
-  silence-mobs:
-    description: allows using a command to silence mobs in a radius
-    permission: silence.command
-  silence-reload:
+    permission: shush.wand
+  shush:
+    description: allows using a command to shush mobs in a radius
+    permission: shush.command
+  shush-reload:
     description: allows reloading the plugin configuration
-    permission: silence.reload
+    permission: shush.reload
 permissions:
-  silence.reload:
+  shush.reload:
     default: op
     description: Allows reloading of the plugin configuration
-  silence.wand:
+  shush.wand:
     default: op
     description: Allows command for getting a wand
-  silence.other.wand:
+  shush.other.wand:
     default: op
     description: Allows giving a wand to another player
-  silence.mobs.basic:
+  shush.mob-type.basic:
     default: op
     description: Allows silencing configured mobs
-  silence.command:
+  shush.command:
     default: op
-    description: allows usage of a command to silence mobs in a radius
-  silence.bypass.mob-type:
+    description: allows usage of a command to shush mobs in a radius
+  shush.bypass.mob-type:
     default: op
-    description: Bypass all configured mob types, silence any mob
-  silence.bypass.cooldown:
-    default: op
-    description: Bypass the wand command cooldown
-  silence.bypass.radius:
+    description: Bypass all configured mob types, shush any mob
+  shush.bypass.radius:
     default: op
     description: Bypass the configured max radius

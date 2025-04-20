@@ -5,7 +5,6 @@ silence-wand:
   item-type: STICK
   item-model: ""
   enchantment-glint: true
-  command-cooldown-seconds: 600
 mobs:
   - CHICKEN
   - COW

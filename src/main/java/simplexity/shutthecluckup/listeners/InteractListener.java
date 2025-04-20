@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import simplexity.shutthecluckup.logic.SilenceLogic;
-import simplexity.shutthecluckup.commands.SilenceWandCommand;
+import simplexity.shutthecluckup.commands.ShushWandCommand;
 import simplexity.shutthecluckup.logic.Util;
 import simplexity.shutthecluckup.configs.Message;
 
@@ -22,7 +22,7 @@ public class InteractListener implements Listener {
         if (interactEvent.getHand().equals(EquipmentSlot.OFF_HAND)) return;
         Player player = interactEvent.getPlayer();
         ItemStack itemUsed = player.getInventory().getItemInMainHand();
-        if (!itemUsed.getPersistentDataContainer().has(SilenceWandCommand.silenceWandKey))  return;
+        if (!itemUsed.getPersistentDataContainer().has(ShushWandCommand.silenceWandKey))  return;
         if (!(interactEvent.getRightClicked() instanceof LivingEntity livingEntity)) return;
         EntityType entityType = livingEntity.getType();
         if (!Util.playerHasEntityPerms(player, entityType)) return;

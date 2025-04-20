@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import simplexity.shutthecluckup.ShutTheCluckUp;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,7 +32,8 @@ public class ConfigHandler {
     private final MiniMessage miniMessage = ShutTheCluckUp.getMiniMessage();
     private ItemStack wandItemStack;
     private final HashSet<EntityType> enabledMobs = new HashSet<>();
-    private final HashSet<String> enabledMobsNames = new HashSet<>();
+    private final ArrayList<String> enabledMobsNames = new ArrayList<>();
+    private final ArrayList<String> allLivingEntityNames = new ArrayList<>();
     private double maxRadius;
 
     public void reloadConfigValues() {
@@ -41,20 +43,28 @@ public class ConfigHandler {
         maxRadius = config.getInt("max-radius", 10);
         validateEntityTypes(mobList, enabledMobs, enabledMobsNames);
         validateSilenceWand(config);
+        fillAllEntityNames();
     }
 
-    private void validateEntityTypes(List<String> stringList, HashSet<EntityType> entitySet, HashSet<String> nameSet) {
+    private void validateEntityTypes(List<String> stringList, HashSet<EntityType> entitySet, ArrayList<String> nameSet) {
         entitySet.clear();
         if (stringList == null || stringList.isEmpty()) return;
         for (String entity : stringList) {
             try {
                 EntityType entityType = EntityType.valueOf(entity);
                 entitySet.add(entityType);
-                nameSet.add(entityType.name());
-
+                nameSet.add(entityType.name().toLowerCase());
             } catch (IllegalArgumentException e) {
                 logger.warning("The entity type '" + entity + "' was not found. Please check that your syntax and make sure you use SPACE and not TAB");
             }
+        }
+    }
+
+    private void fillAllEntityNames(){
+        allLivingEntityNames.clear();
+        for (EntityType entity : EntityType.values()) {
+            if (!entity.isAlive()) continue;
+            allLivingEntityNames.add(entity.name().toLowerCase());
         }
     }
 
@@ -95,6 +105,14 @@ public class ConfigHandler {
 
     public HashSet<EntityType> getEnabledMobs(){
         return enabledMobs;
+    }
+
+    public ArrayList<String> getEnabledMobNames(){
+        return enabledMobsNames;
+    }
+
+    public ArrayList<String> getAllLivingEntityNames() {
+        return allLivingEntityNames;
     }
 
     public double getMaxRadius() {

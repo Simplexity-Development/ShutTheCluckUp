@@ -1,15 +1,14 @@
 package simplexity.shutthecluckup;
 
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.java.JavaPlugin;
-import simplexity.shutthecluckup.commands.SilenceMobsCommands;
-import simplexity.shutthecluckup.commands.SilenceReload;
-import simplexity.shutthecluckup.commands.SilenceWandCommand;
+import simplexity.shutthecluckup.commands.ShushCommand;
+import simplexity.shutthecluckup.commands.ShushReload;
+import simplexity.shutthecluckup.commands.ShushWandCommand;
 import simplexity.shutthecluckup.configs.ConfigHandler;
 import simplexity.shutthecluckup.listeners.InteractListener;
 
-@SuppressWarnings("UnstableApiUsage")
+
 public final class ShutTheCluckUp extends JavaPlugin {
 
     private static ShutTheCluckUp instance;
@@ -21,19 +20,19 @@ public final class ShutTheCluckUp extends JavaPlugin {
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         ConfigHandler.getInstance().reloadConfigValues();
-        getCommand("silence-wand").setExecutor(new SilenceWandCommand());
-        getCommand("silence-mobs").setExecutor(new SilenceMobsCommands());
-        getCommand("silence-reload").setExecutor(new SilenceReload());
+        getCommand("shush-wand").setExecutor(new ShushWandCommand());
+        getCommand("shush").setExecutor(new ShushCommand());
+        getCommand("shush-reload").setExecutor(new ShushReload());
         getServer().getPluginManager().registerEvents(new InteractListener(), this);
         // Plugin startup logic
 
     }
 
-    public static ShutTheCluckUp getInstance(){
+    public static ShutTheCluckUp getInstance() {
         return instance;
     }
 
-    public static MiniMessage getMiniMessage(){
+    public static MiniMessage getMiniMessage() {
         return miniMessage;
     }
 
