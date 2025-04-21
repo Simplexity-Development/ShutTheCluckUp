@@ -1,10 +1,11 @@
 # Please note, changes to this file will not invalidate previously made wands.
 # Wands are validated through a tag in their Persistent Data Container.
 silence-wand:
-  custom-name: "<yellow>Silencing Wand</yellow>"
+  custom-name: "<yellow>Shush Stick</yellow>"
   item-type: STICK
   item-model: ""
   enchantment-glint: true
+  command-cooldown-seconds: 600
 mobs:
   - CHICKEN
   - COW

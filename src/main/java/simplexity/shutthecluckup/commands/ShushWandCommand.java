@@ -8,19 +8,23 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import simplexity.shutthecluckup.ShutTheCluckUp;
-import simplexity.shutthecluckup.logic.Util;
 import simplexity.shutthecluckup.configs.ConfigHandler;
 import simplexity.shutthecluckup.configs.Message;
+import simplexity.shutthecluckup.configs.MessageUtils;
+import simplexity.shutthecluckup.logic.Util;
 
 import java.util.List;
 
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class ShushWandCommand implements TabExecutor {
 
     public static final NamespacedKey silenceWandKey = new NamespacedKey(ShutTheCluckUp.getInstance(), "silence-wand");
+    public static final NamespacedKey cooldownKey = new NamespacedKey(ShutTheCluckUp.getInstance(), "wand-command-cooldown");
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
@@ -32,6 +36,7 @@ public class ShushWandCommand implements TabExecutor {
             sender.sendRichMessage(Message.ERROR_MUST_PROVIDE_PLAYER.getMessage());
             return false;
         }
+        if (!passedCooldown(sender, targetPlayer)) return false;
         giveWand(targetPlayer);
         sendSuccessMessage(sender, targetPlayer);
         return false;
@@ -49,15 +54,25 @@ public class ShushWandCommand implements TabExecutor {
     }
 
 
-    private boolean handleNoArgument(CommandSender sender){
+    private boolean handleNoArgument(CommandSender sender) {
         if (!(sender instanceof Player player)) {
             sender.sendRichMessage(Message.ERROR_MUST_PROVIDE_PLAYER.getMessage());
             return false;
-        } else {
-            giveWand(player);
-            sendSuccessMessage(sender, player);
-            return true;
         }
+        if (!passedCooldown(sender, player)) return false;
+        giveWand(player);
+        sendSuccessMessage(sender, player);
+        return true;
+    }
+
+    private boolean passedCooldown(CommandSender sender, Player targetPlayer) {
+        long cooldownSecondsLeft = cooldownSecondsLeft(sender, targetPlayer);
+        if (cooldownSecondsLeft != -1) {
+            sender.sendRichMessage(Message.ERROR_COOLDOWN_NOT_EXPIRED.getMessage(),
+                    MessageUtils.getTimeFormat(cooldownSecondsLeft));
+            return false;
+        }
+        return true;
     }
 
     private void giveWand(Player player) {
@@ -74,6 +89,25 @@ public class ShushWandCommand implements TabExecutor {
         player.getInventory().setItem(emptySlot, wand);
     }
 
+    private long cooldownSecondsLeft(CommandSender sender, Player player) {
+        if (sender.hasPermission(Util.WAND_COOLDOWN_BYPASS)) {
+            return -1;
+        }
+        PersistentDataContainer playerPDC = player.getPersistentDataContainer();
+        long currentTime = System.currentTimeMillis();
+        long savedTime = playerPDC.getOrDefault(cooldownKey, PersistentDataType.LONG, -1L);
+        if (savedTime == -1L) {
+            playerPDC.set(cooldownKey, PersistentDataType.LONG, currentTime);
+            return -1;
+        }
+        long cooldownTime = ConfigHandler.getInstance().getCooldownSeconds() * 1000L;
+        long timeDiff = currentTime - savedTime;
+        if (timeDiff > cooldownTime) {
+            playerPDC.set(cooldownKey, PersistentDataType.LONG, currentTime);
+            return -1;
+        }
+        return timeDiff / 1000L;
+    }
 
 
     @Override

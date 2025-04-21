@@ -34,7 +34,7 @@ public class ShushCommand implements TabExecutor {
     }
 
     @Nullable
-    private CommandParameters getCommandParameters(CommandSender sender, String[] args){
+    private CommandParameters getCommandParameters(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendRichMessage(Message.ERROR_MUST_BE_PLAYER.getMessage());
             return null;
@@ -59,9 +59,12 @@ public class ShushCommand implements TabExecutor {
         Double radius = Util.validateDouble(args[1]);
         double maxRadius = ConfigHandler.getInstance().getMaxRadius();
         if (radius == null) {
-            //todo check if they have override perms and change message
-            player.sendRichMessage(Message.ERROR_INVALID_RADIUS.getMessage(),
-                    Placeholder.parsed("max", String.valueOf(maxRadius)));
+            if (player.hasPermission(Util.SILENCE_MOBS_COMMAND_RADIUS_OVERRIDE)) {
+                player.sendRichMessage(Message.ERROR_INVALID_RADIUS_NUMBER.getMessage());
+            } else {
+                player.sendRichMessage(Message.ERROR_INVALID_RADIUS.getMessage(),
+                        Placeholder.parsed("max", String.valueOf(maxRadius)));
+            }
             return null;
         }
         if ((radius < 0 || radius > maxRadius) && !player.hasPermission(Util.SILENCE_MOBS_COMMAND_RADIUS_OVERRIDE)) {
@@ -84,7 +87,7 @@ public class ShushCommand implements TabExecutor {
         return new CommandParameters(entity, radius, shouldSilence, player);
     }
 
-    private void handleSilenceMobs(CommandParameters parameters){
+    private void handleSilenceMobs(CommandParameters parameters) {
         Player player = parameters.player();
         Location location = player.getLocation();
         double radius = parameters.radius();
@@ -102,11 +105,11 @@ public class ShushCommand implements TabExecutor {
         for (LivingEntity livingEntity : nearbyEntities) {
             Boolean silencingSuccessful = SilenceLogic.setSilentTag(livingEntity, shouldSilence);
             if (silencingSuccessful == null) {
-                unableToBeModified ++;
+                unableToBeModified++;
                 continue;
             }
             if (silencingSuccessful) {
-                successful ++;
+                successful++;
             }
         }
         if (successful == 0 && unableToBeModified == 0) {
@@ -129,7 +132,6 @@ public class ShushCommand implements TabExecutor {
     }
 
 
-
     private Component parseEntityMessage(int numberModified, EntityType entity, String message, Double radius, Boolean state) {
         String entityName = "<lang:" + entity.translationKey() + ">";
         return miniMessage.deserialize(message,
@@ -145,7 +147,8 @@ public class ShushCommand implements TabExecutor {
         if (!(sender instanceof Player)) return null;
         if (!sender.hasPermission(Util.SILENCE_MOBS_COMMAND)) return List.of();
         if (args.length < 2) {
-            if (sender.hasPermission(Util.MOB_TYPE_BYPASS)) return ConfigHandler.getInstance().getAllLivingEntityNames();
+            if (sender.hasPermission(Util.MOB_TYPE_BYPASS))
+                return ConfigHandler.getInstance().getAllLivingEntityNames();
             if (sender.hasPermission(Util.BASIC_PERM)) return ConfigHandler.getInstance().getEnabledMobNames();
         }
         if (args.length == 2) {

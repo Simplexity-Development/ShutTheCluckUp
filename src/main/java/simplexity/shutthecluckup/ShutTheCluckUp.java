@@ -20,12 +20,10 @@ public final class ShutTheCluckUp extends JavaPlugin {
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         ConfigHandler.getInstance().reloadConfigValues();
-        getCommand("shush-wand").setExecutor(new ShushWandCommand());
+        getCommand("shushwand").setExecutor(new ShushWandCommand());
         getCommand("shush").setExecutor(new ShushCommand());
         getCommand("shush-reload").setExecutor(new ShushReload());
         getServer().getPluginManager().registerEvents(new InteractListener(), this);
-        // Plugin startup logic
-
     }
 
     public static ShutTheCluckUp getInstance() {

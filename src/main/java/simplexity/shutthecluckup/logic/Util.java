@@ -6,12 +6,13 @@ import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.Nullable;
 import simplexity.shutthecluckup.configs.ConfigHandler;
 
-@SuppressWarnings("RedundantIfStatement")
+@SuppressWarnings({"RedundantIfStatement", "BooleanMethodIsAlwaysInverted"})
 public class Util {
 
     public static final Permission BASIC_PERM = new Permission("shush.mob-type.basic");
     public static final Permission MOB_TYPE_BYPASS = new Permission("shush.bypass.mob-type");
     public static final Permission WAND_OTHER_COMMAND = new Permission("shush.other.wand");
+    public static final Permission WAND_COOLDOWN_BYPASS = new Permission("shush.bypass.cooldown");
     public static final Permission SILENCE_MOBS_COMMAND = new Permission("shush.command");
     public static final Permission SILENCE_MOBS_COMMAND_RADIUS_OVERRIDE = new Permission("shush.bypass.radius");
 

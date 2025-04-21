@@ -35,12 +35,14 @@ public class ConfigHandler {
     private final ArrayList<String> enabledMobsNames = new ArrayList<>();
     private final ArrayList<String> allLivingEntityNames = new ArrayList<>();
     private double maxRadius;
+    private int cooldownSeconds;
 
     public void reloadConfigValues() {
         ShutTheCluckUp.getInstance().reloadConfig();
         FileConfiguration config = ShutTheCluckUp.getInstance().getConfig();
         List<String> mobList = config.getStringList("mobs");
         maxRadius = config.getInt("max-radius", 10);
+        cooldownSeconds = config.getInt("silence-wand.command-cooldown-seconds", 600);
         validateEntityTypes(mobList, enabledMobs, enabledMobsNames);
         validateSilenceWand(config);
         fillAllEntityNames();
@@ -117,5 +119,9 @@ public class ConfigHandler {
 
     public double getMaxRadius() {
         return maxRadius;
+    }
+
+    public int getCooldownSeconds() {
+        return cooldownSeconds;
     }
 }

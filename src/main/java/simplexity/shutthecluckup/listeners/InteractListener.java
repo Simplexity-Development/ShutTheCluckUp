@@ -25,19 +25,24 @@ public class InteractListener implements Listener {
         if (!itemUsed.getPersistentDataContainer().has(ShushWandCommand.silenceWandKey))  return;
         if (!(interactEvent.getRightClicked() instanceof LivingEntity livingEntity)) return;
         EntityType entityType = livingEntity.getType();
-        if (!Util.playerHasEntityPerms(player, entityType)) return;
+        String entityTranslation = "<lang:" + entityType.translationKey() + ">";
+        if (!Util.playerHasEntityPerms(player, entityType)) {
+            player.sendRichMessage(Message.ERROR_NO_PERMISSION_FOR_THIS_ENTITY.getMessage(),
+                    Placeholder.parsed("entity", entityTranslation));
+            return;
+        }
         Boolean silenced = SilenceLogic.toggleEntitySilence(livingEntity);
         if (silenced == null) {
             player.sendRichMessage(Message.MOB_CANNOT_BE_ALTERED.getMessage(),
-                    Placeholder.component("entity", livingEntity.name()));
+                    Placeholder.parsed("entity", entityTranslation));
             return;
         }
         if (silenced) {
             player.sendRichMessage(Message.MOB_SILENCED.getMessage(),
-                    Placeholder.component("entity", livingEntity.name()));
+                    Placeholder.parsed("entity", entityTranslation));
         } else {
             player.sendRichMessage(Message.MOB_UN_SILENCED.getMessage(),
-                    Placeholder.component("entity", livingEntity.name()));
+                    Placeholder.parsed("entity", entityTranslation));
         }
 
     }
